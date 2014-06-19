@@ -36,6 +36,7 @@
   DiffView.prototype = {
     constructor: DiffView,
     init: function(pane, orig, options) {
+      this.withoutMergeCopyIcon = options.withoutMergeCopyIcon
       this.edit = this.mv.edit;
       this.orig = CodeMirror(pane, copyObj({value: orig, readOnly: true}, copyObj(options)));
 
@@ -279,11 +280,13 @@
               "d", "M -1 " + topRpx + curveTop + " L " + (w + 2) + " " + botLpx + curveBot + " z",
               "class", dv.classes.connect);
       }
-      var copy = dv.copyButtons.appendChild(elt("div", dv.type == "left" ? "\u21dd" : "\u21dc",
-                                                "CodeMirror-merge-copy"));
-      copy.title = "Revert chunk";
-      copy.chunk = {topEdit: topEdit, botEdit: botEdit, topOrig: topOrig, botOrig: botOrig};
-      copy.style.top = top + "px";
+      if (dv.withoutMergeCopyIcon != true) {
+        var copy = dv.copyButtons.appendChild(elt("div", dv.type == "left" ? "\u21dd" : "\u21dc",
+                                                  "CodeMirror-merge-copy"));
+        copy.title = "Revert chunk";
+        copy.chunk = {topEdit: topEdit, botEdit: botEdit, topOrig: topOrig, botOrig: botOrig};
+        copy.style.top = top + "px";
+      }
     });
   }
 
