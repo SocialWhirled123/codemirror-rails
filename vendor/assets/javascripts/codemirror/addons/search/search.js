@@ -87,6 +87,19 @@
       });
     });
   }
+  function formSearch(cm, val) {
+    var state = getSearchState(cm);
+    if (state.query) return findNext(cm);
+    cm.operation(function() {
+      if (!val || state.query) return;
+      state.query = parseQuery(val);
+      cm.removeOverlay(state.overlay, queryCaseInsensitive(state.query));
+      state.overlay = searchOverlay(state.query, queryCaseInsensitive(state.query));
+      cm.addOverlay(state.overlay);
+      state.posFrom = state.posTo = cm.getCursor();
+      findNext(cm);
+    });
+  }
   function findNext(cm, rev) {cm.operation(function() {
     var state = getSearchState(cm);
     var cursor = getSearchCursor(cm, state.query, rev ? state.posFrom : state.posTo);
@@ -155,4 +168,5 @@
   CodeMirror.commands.clearSearch = clearSearch;
   CodeMirror.commands.replace = replace;
   CodeMirror.commands.replaceAll = function(cm) {replace(cm, true);};
+  CodeMirror.commands.doSearch = function(cm, val) { clearSearch(cm); formSearch(cm, val); };
 });
