@@ -3634,6 +3634,16 @@
     var range = cm.curOp.scrollToPos;
     if (range) {
       cm.curOp.scrollToPos = null;
+
+      // If searchScrollTop is true the search result will show the result on the top of the view "textarea"
+      if (cm.options.searchScrollTop) {
+        var height = $('div.CodeMirror').height();
+        if (height) {
+          var lines = parseInt(parseInt(height) / 12);
+          if (range.to.line > lines) range.to.line = range.to.line + (lines - 1);
+        }
+      }
+
       var from = estimateCoords(cm, range.from), to = estimateCoords(cm, range.to);
       var sPos = calculateScrollPos(cm, Math.min(from.left, to.left),
                                     Math.min(from.top, to.top) - range.margin,
@@ -4397,6 +4407,7 @@
     cm.display.input.tabIndex = val || "";
   });
   option("autofocus", null);
+  option("searchScrollTop", false);
 
   // MODE DEFINITION AND QUERYING
 
