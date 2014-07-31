@@ -88,6 +88,7 @@
     });
   }
   function formSearch(cm, val) {
+    cleanTotalAndCurrentElementFound();
     var state = getSearchState(cm);
     if (state.query) return findNext(cm);
     cm.operation(function() {
@@ -103,6 +104,7 @@
   function findNext(cm, rev) {cm.operation(function() {
     var state = getSearchState(cm);
     var cursor = getSearchCursor(cm, state.query, rev ? state.posFrom : state.posTo);
+
     if (!cursor.find(rev)) {
       cursor = getSearchCursor(cm, state.query, rev ? CodeMirror.Pos(cm.lastLine()) : CodeMirror.Pos(cm.firstLine(), 0));
       if (!cursor.find(rev)) return;
@@ -110,6 +112,7 @@
     cm.setSelection(cursor.from(), cursor.to());
     cm.scrollIntoView({from: cursor.from(), to: cursor.to()});
     state.posFrom = cursor.from(); state.posTo = cursor.to();
+    getTotalAndCurrentElementFound(cm, state)
   });}
   function clearSearch(cm) {cm.operation(function() {
     var state = getSearchState(cm);
@@ -117,6 +120,25 @@
     state.query = null;
     cm.removeOverlay(state.overlay);
   });}
+
+  function getTotalAndCurrentElementFound(cm, state) {
+    var counter = getSearchCursor(cm, state.query, null);
+    var arr = new Array();
+    var current_element;
+
+    while (counter.find(false)) { arr.push(counter.from()); }
+
+    var index_element = $.map(arr, function(element, index) {
+      if (JSON.stringify(element) === JSON.stringify(state.posFrom)) return index;
+    });
+
+    current_element = parseInt(index_element) + 1;
+    $('span.codemirror_search_counter').html(current_element + " of " + arr.length);
+  }
+
+  function cleanTotalAndCurrentElementFound() {
+    $('span.codemirror_search_counter').html('');
+  }
 
   var replaceQueryDialog =
     'Replace: <input type="text" style="width: 10em"/> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
