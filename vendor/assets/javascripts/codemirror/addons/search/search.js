@@ -78,6 +78,7 @@
     dialog(cm, queryDialog, "Search for:", cm.getSelection(), function(query) {
       cm.operation(function() {
         if (!query || state.query) return;
+        returnDialogValue(query);
         state.query = parseQuery(query);
         cm.removeOverlay(state.overlay, queryCaseInsensitive(state.query));
         state.overlay = searchOverlay(state.query, queryCaseInsensitive(state.query));
@@ -139,6 +140,11 @@
   function cleanTotalAndCurrentElementFound() {
     $('span.codemirror_search_counter').html('');
   }
+
+  function returnDialogValue(v) {
+    document.getElementById('search').value = v;
+  }
+
 
   var replaceQueryDialog =
     'Replace: <input type="text" style="width: 10em" class="CodeMirror-search-field"/> <span style="color: #888" class="CodeMirror-search-hint">(Use /re/ syntax for regexp search)</span>';
