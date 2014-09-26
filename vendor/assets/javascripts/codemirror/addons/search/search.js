@@ -108,7 +108,10 @@
 
     if (!cursor.find(rev)) {
       cursor = getSearchCursor(cm, state.query, rev ? CodeMirror.Pos(cm.lastLine()) : CodeMirror.Pos(cm.firstLine(), 0));
-      if (!cursor.find(rev)) return;
+      if (!cursor.find(rev)) {
+        cleanTotalAndCurrentElementFound();
+        return;
+      }
     }
     cm.setSelection(cursor.from(), cursor.to());
     cm.scrollIntoView({from: cursor.from(), to: cursor.to()});
@@ -134,6 +137,7 @@
     });
 
     current_element = parseInt(index_element) + 1;
+
     $('span.codemirror_search_counter').html(current_element + " of " + arr.length);
   }
 
