@@ -280,21 +280,15 @@
               "d", "M -1 " + topRpx + curveTop + " L " + (w + 2) + " " + botLpx + curveBot + " z",
               "class", dv.classes.connect);
       }
-<<<<<<< HEAD
-      if (dv.withoutMergeCopyIcon != true) {
-        var copy = dv.copyButtons.appendChild(elt("div", dv.type == "left" ? "\u21dd" : "\u21dc",
-                                                  "CodeMirror-merge-copy"));
-        copy.title = "Revert chunk";
-        copy.chunk = {topEdit: topEdit, botEdit: botEdit, topOrig: topOrig, botOrig: botOrig};
-        copy.style.top = top + "px";
-=======
       if (dv.copyButtons) {
-        var copy = dv.copyButtons.appendChild(elt("div", dv.type == "left" ? "\u21dd" : "\u21dc",
-                                                  "CodeMirror-merge-copy"));
         var editOriginals = dv.mv.options.allowEditingOriginals;
-        copy.title = editOriginals ? "Push to left" : "Revert chunk";
-        copy.chunk = {topEdit: topEdit, botEdit: botEdit, topOrig: topOrig, botOrig: botOrig};
-        copy.style.top = top + "px";
+        if (dv.withoutMergeCopyIcon != true) {
+          var copy = dv.copyButtons.appendChild(elt("div", dv.type == "left" ? "\u21dd" : "\u21dc",
+                                                    "CodeMirror-merge-copy"));
+          copy.title = editOriginals ? "Push to left" : "Revert chunk";
+          copy.chunk = {topEdit: topEdit, botEdit: botEdit, topOrig: topOrig, botOrig: botOrig};
+          copy.style.top = top + "px";
+        }
 
         if (editOriginals) {
           var topReverse = dv.orig.heightAtLine(topEdit, "local") - sTopEdit;
@@ -305,7 +299,6 @@
           copyReverse.style.top = topReverse + "px";
           dv.type == "right" ? copyReverse.style.left = "2px" : copyReverse.style.right = "2px";
         }
->>>>>>> upstream/master
       }
     });
   }
