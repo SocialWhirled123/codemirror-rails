@@ -116,7 +116,7 @@
     cm.setSelection(cursor.from(), cursor.to());
     cm.scrollIntoView({from: cursor.from(), to: cursor.to()});
     state.posFrom = cursor.from(); state.posTo = cursor.to();
-    getTotalAndCurrentElementFound(cm, state)
+    getTotalAndCurrentElementFound(cm, state);
   });}
   function clearSearch(cm) {cm.operation(function() {
     var state = getSearchState(cm);
