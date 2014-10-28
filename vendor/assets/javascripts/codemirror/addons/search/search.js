@@ -72,13 +72,14 @@
   }
   var queryDialog =
     'Search: <input type="text" style="width: 10em" class="CodeMirror-search-field"/> <span style="color: #888" class="CodeMirror-search-hint">(Use /re/ syntax for regexp search)</span>';
-  function doSearch(cm, rev) {
+  function doSearch(cm, rev, val) {
     var state = getSearchState(cm);
-    if (state.query) return findNext(cm, rev);
-    dialog(cm, queryDialog, "Search for:", cm.getSelection(), function(query) {
+    if (state.query && (state.query == val)) {
+      return findNext(cm, rev);
+    } else {
+      var query = val;
       cm.operation(function() {
-        if (!query || state.query) return;
-        returnDialogValue(query);
+        if (!val) return;
         state.query = parseQuery(query);
         cm.removeOverlay(state.overlay, queryCaseInsensitive(state.query));
         state.overlay = searchOverlay(state.query, queryCaseInsensitive(state.query));
@@ -86,7 +87,7 @@
         state.posFrom = state.posTo = cm.getCursor();
         findNext(cm, rev);
       });
-    });
+    }
   }
   function formSearch(cm, val) {
     cleanTotalAndCurrentElementFound();
@@ -198,7 +199,7 @@
 
   CodeMirror.commands.find = function(cm) {clearSearch(cm); doSearch(cm);};
   CodeMirror.commands.findNext = doSearch;
-  CodeMirror.commands.findPrev = function(cm) {doSearch(cm, true);};
+  CodeMirror.commands.findPrev = function(cm, val) {doSearch(cm, true, val);};
   CodeMirror.commands.clearSearch = clearSearch;
   CodeMirror.commands.replace = replace;
   CodeMirror.commands.replaceAll = function(cm) {replace(cm, true);};
