@@ -1,4 +1,5 @@
 # codemirror-rails
+! Branch to test new codemirror features for the editor
 
 Wire up the [CodeMirror](http://codemirror.net/) assets for your Rails
 applications.
