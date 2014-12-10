@@ -84,8 +84,13 @@
         cm.addOverlay(state.overlay);
         state.posFrom = state.posTo = cm.getCursor();
         findNext(cm, rev);
+        returnDialogValue(query);
       });
     });
+  }
+
+  function returnDialogValue(v) {
+    document.getElementById('search').value = v;
   }
   function formSearch(cm, val) {
     cleanTotalAndCurrentElementFound();
